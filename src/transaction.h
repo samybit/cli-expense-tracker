@@ -39,4 +39,10 @@ Transaction create_transaction(int id,
 
 void print_transaction(const Transaction *t);
 
+// List management functions
+void init_transaction_list(TransactionList *list, int initial_capacity);
+void add_transaction(TransactionList *list, Transaction t);
+void print_all_transactions(const TransactionList *list);
+void free_transaction_list(TransactionList *list);
+
 #endif
