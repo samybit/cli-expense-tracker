@@ -4,13 +4,25 @@
 #include "transaction.h"
 #include "utils.h"
 #include "utils.h"
+#include "storage.h"
 
 int main()
 {
     TransactionList my_list;
     init_transaction_list(&my_list, 2); // Start with a small capacity to test realloc quickly
 
+    const char *DATA_FILE = "data/transactions.dat";
+
+    // --- LOAD ON STARTUP ---
+    load_transactions(&my_list, DATA_FILE);
+
+    // Calculate the next ID to use based on loaded data
     int current_id = 1;
+    if (my_list.count > 0)
+    {
+        current_id = my_list.items[my_list.count - 1].id + 1;
+    }
+
     int choice = 0;
     char buffer[10];
 
@@ -19,7 +31,7 @@ int main()
         printf("\n=== Expense Tracker ===\n");
         printf("1. Add Transaction\n");
         printf("2. List Transactions\n");
-        printf("3. Exit\n");
+        printf("3. Exit (and Save)\n");
         printf("Choose an option: ");
 
         read_string(buffer, sizeof(buffer));
@@ -61,6 +73,9 @@ int main()
             printf("Invalid choice. Please try again.\n");
         }
     }
+    
+    // --- SAVE BEFORE EXIT ---
+    save_transactions(&my_list, DATA_FILE);
 
     // Memory cleanup
     free_transaction_list(&my_list);

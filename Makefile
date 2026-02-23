@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -I./src
-SRC = src/main.c src/transaction.c src/utils.c
+SRC = src/main.c src/transaction.c src/utils.c src/storage.c
 OBJ = $(SRC:.c=.o)
 EXEC = expense_tracker
 
