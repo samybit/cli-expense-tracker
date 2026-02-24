@@ -33,7 +33,8 @@ int main()
         printf("2. List Transactions\n");
         printf("3. Delete Transaction\n");
         printf("4. Monthly Summary\n");
-        printf("5. Exit (and Save)\n");
+        printf("5. Sort Transactions\n");
+        printf("6. Exit (and Save)\n");
         printf("Choose an option: ");
 
         read_string(buffer, sizeof(buffer));
@@ -94,9 +95,35 @@ int main()
 
             monthly_summary(&my_list, target_year, target_month);
         }
-        else if (choice != 5)
+        else if (choice == 5)
         {
-            // Invalid choice
+            // --- SORTING ---
+            printf("Sort by:\n");
+            printf("1. Date\n");
+            printf("2. Amount\n");
+            printf("Choose an option: ");
+
+            read_string(buffer, sizeof(buffer));
+            int sort_choice = atoi(buffer);
+
+            if (sort_choice == 1)
+            {
+                sort_transactions(&my_list, SORT_BY_DATE);
+                print_all_transactions(&my_list);
+            }
+            else if (sort_choice == 2)
+            {
+                sort_transactions(&my_list, SORT_BY_AMOUNT);
+                print_all_transactions(&my_list);
+            }
+            else
+            {
+                printf("Invalid sorting choice.\n");
+            }
+        }
+        else if (choice != 6)
+        {
+            // --- INVALID CHOICE ---
             printf("Invalid choice. Please try again.\n");
         }
     }
@@ -106,7 +133,7 @@ int main()
 
     // Memory cleanup
     free_transaction_list(&my_list);
-    
+
     printf("Goodbye!\n");
 
     return 0;
