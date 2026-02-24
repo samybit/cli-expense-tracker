@@ -32,7 +32,8 @@ int main()
         printf("1. Add Transaction\n");
         printf("2. List Transactions\n");
         printf("3. Delete Transaction\n");
-        printf("4. Exit (and Save)\n");
+        printf("4. Monthly Summary\n");
+        printf("5. Exit (and Save)\n");
         printf("Choose an option: ");
 
         read_string(buffer, sizeof(buffer));
@@ -40,6 +41,7 @@ int main()
 
         if (choice == 1)
         {
+            // --- ADD TRANSACTION ---
             char date[15], category[50], desc[100];
             double amount;
             int type_choice;
@@ -67,18 +69,34 @@ int main()
         }
         else if (choice == 2)
         {
+            // --- LIST TRANSACTIONS ---
             print_all_transactions(&my_list);
         }
         else if (choice == 3)
         {
+            // --- DELETE TRANSACTION ---
             printf("Enter the ID of the transaction to delete: ");
             read_string(buffer, sizeof(buffer));
             int id_to_delete = atoi(buffer);
 
             delete_transaction(&my_list, id_to_delete);
         }
-        else if (choice != 4)
+        else if (choice == 4)
         {
+            // --- MONTHLY SUMMARY ---
+            printf("Enter Year (e.g., 2023): ");
+            read_string(buffer, sizeof(buffer));
+            int target_year = atoi(buffer);
+
+            printf("Enter Month (1-12): ");
+            read_string(buffer, sizeof(buffer));
+            int target_month = atoi(buffer);
+
+            monthly_summary(&my_list, target_year, target_month);
+        }
+        else if (choice != 5)
+        {
+            // Invalid choice
             printf("Invalid choice. Please try again.\n");
         }
     }
