@@ -26,8 +26,9 @@ int main()
     int choice = 0;
     char buffer[10];
 
-    while (choice != 3)
+    while (choice != 6)
     {
+
         printf("\n=== Expense Tracker ===\n");
         printf("1. Add Transaction\n");
         printf("2. List Transactions\n");
@@ -35,7 +36,15 @@ int main()
         printf("4. Monthly Summary\n");
         printf("5. Sort Transactions\n");
         printf("6. Exit (and Save)\n");
+
         printf("Choose an option: ");
+
+        // Ensure the user enters a number
+        if (!read_int(&choice))
+        {
+            printf("Invalid input. Please enter a number.\n");
+            continue;
+        }
 
         read_string(buffer, sizeof(buffer));
         choice = atoi(buffer);
@@ -51,11 +60,18 @@ int main()
             read_string(date, sizeof(date));
 
             printf("Enter amount: ");
-            amount = read_double();
+            // Ensure the user enters a valid positive number
+            while (!read_double(&amount) || amount < 0)
+            {
+                printf("Invalid amount. Please enter a valid positive number: ");
+            }
 
             printf("Enter type (0 for INCOME, 1 for EXPENSE): ");
-            read_string(buffer, sizeof(buffer));
-            type_choice = atoi(buffer);
+            // Ensure the user enters 0 or 1
+            while (!read_int(&type_choice) || (type_choice != 0 && type_choice != 1))
+            {
+                printf("Invalid input. Enter 0 for INCOME or 1 for EXPENSE: ");
+            }
             TransactionType type = (type_choice == 0) ? INCOME : EXPENSE;
 
             printf("Enter category (e.g., Food, Salary): ");
