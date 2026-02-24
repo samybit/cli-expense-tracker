@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdlib.h>
 #include "transaction.h"
 #include "utils.h"
 #include "storage.h"
@@ -23,7 +22,6 @@ int main()
     }
 
     int choice = 0;
-    char buffer[10];
 
     while (choice != 7)
     {
@@ -44,9 +42,6 @@ int main()
             printf("Invalid input. Please enter a number.\n");
             continue;
         }
-
-        read_string(buffer, sizeof(buffer));
-        choice = atoi(buffer);
 
         if (choice == 1)
         {
@@ -91,22 +86,31 @@ int main()
         else if (choice == 3)
         {
             // --- DELETE TRANSACTION ---
+            int id_to_delete;
             printf("Enter the ID of the transaction to delete: ");
-            read_string(buffer, sizeof(buffer));
-            int id_to_delete = atoi(buffer);
+            while (!read_int(&id_to_delete))
+            {
+                printf("Invalid input. Please enter a valid numerical ID: ");
+            }
 
             delete_transaction(&my_list, id_to_delete);
         }
         else if (choice == 4)
         {
             // --- MONTHLY SUMMARY ---
+            int target_year, target_month;
+
             printf("Enter Year (e.g., 2023): ");
-            read_string(buffer, sizeof(buffer));
-            int target_year = atoi(buffer);
+            while (!read_int(&target_year) || target_year < 1900 || target_year > 2100)
+            {
+                printf("Invalid input. Please enter a valid 4-digit year: ");
+            }
 
             printf("Enter Month (1-12): ");
-            read_string(buffer, sizeof(buffer));
-            int target_month = atoi(buffer);
+            while (!read_int(&target_month) || target_month < 1 || target_month > 12)
+            {
+                printf("Invalid input. Please enter a month between 1 and 12: ");
+            }
 
             monthly_summary(&my_list, target_year, target_month);
         }
@@ -118,8 +122,11 @@ int main()
             printf("2. Amount\n");
             printf("Choose an option: ");
 
-            read_string(buffer, sizeof(buffer));
-            int sort_choice = atoi(buffer);
+            int sort_choice;
+            while (!read_int(&sort_choice) || (sort_choice != 1 && sort_choice != 2))
+            {
+                printf("Invalid input. Please enter 1 or 2: ");
+            }
 
             if (sort_choice == 1)
             {
@@ -130,10 +137,6 @@ int main()
             {
                 sort_transactions(&my_list, SORT_BY_AMOUNT);
                 print_all_transactions(&my_list);
-            }
-            else
-            {
-                printf("Invalid sorting choice.\n");
             }
         }
         else if (choice == 6)
