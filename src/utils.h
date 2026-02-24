@@ -2,6 +2,10 @@
 #define UTILS_H
 
 void read_string(char *buffer, int max_length);
-double read_double();
+
+// return 1 on success, 0 on failure, 
+// and pass the actual value via a pointer.
+int read_int(int *result);
+int read_double(double *result);
 
 #endif

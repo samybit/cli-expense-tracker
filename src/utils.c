@@ -17,10 +17,40 @@ void read_string(char *buffer, int max_length)
     }
 }
 
-// Safely reads a double by first reading a string, then converting it
-double read_double()
+int read_int(int *result)
 {
     char buffer[50];
     read_string(buffer, sizeof(buffer));
-    return atof(buffer); // Convert string to float/double
+
+    char *endptr;
+    // strtol converts string to long, base 10
+    long val = strtol(buffer, &endptr, 10);
+
+    // If endptr points to the start, no digits were found.
+    // If *endptr is not '\0', they typed mixed garbage like "12abc".
+    if (endptr == buffer || *endptr != '\0')
+    {
+        return 0; // Failure
+    }
+
+    *result = (int)val;
+    return 1; // Success
+}
+
+// Safely reads a double by first reading a string, then converting it
+int read_double(double *result)
+{
+    char buffer[50];
+    read_string(buffer, sizeof(buffer));
+
+    char *endptr;
+    double val = strtod(buffer, &endptr);
+
+    if (endptr == buffer || *endptr != '\0')
+    {
+        return 0; // Failure
+    }
+
+    *result = val;
+    return 1; // Success
 }
