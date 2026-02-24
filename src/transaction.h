@@ -45,5 +45,6 @@ void add_transaction(TransactionList *list, Transaction t);
 void print_all_transactions(const TransactionList *list);
 void free_transaction_list(TransactionList *list);
 void delete_transaction(TransactionList *list, int id);
+void monthly_summary(const TransactionList *list, int target_year, int target_month);
 
 #endif

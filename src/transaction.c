@@ -155,3 +155,59 @@ void delete_transaction(TransactionList *list, int id)
         }
     }
 }
+
+void monthly_summary(const TransactionList *list, int target_year, int target_month)
+{
+    double total_income = 0.0;
+    double total_expense = 0.0;
+    int match_count = 0;
+
+    printf("\n--- Summary for %04d-%02d ---\n", target_year, target_month);
+    printf("%-12s | %-10s | %-9s | %-15s\n", "Date", "Amount", "Type", "Category");
+    printf("----------------------------------------------------\n");
+
+    for (int i = 0; i < list->count; i++)
+    {
+        Transaction *t = &list->items[i];
+        int year, month, day;
+
+        // Parse the "YYYY-MM-DD" string into integer variables
+        if (sscanf(t->date, "%d-%d-%d", &year, &month, &day) == 3)
+        {
+
+            // Filter by the requested month and year
+            if (year == target_year && month == target_month)
+            {
+                printf("%-12s | %-10.2f | %-9s | %-15s\n",
+                       t->date,
+                       t->amount,
+                       (t->type == INCOME) ? "INCOME" : "EXPENSE",
+                       t->category);
+
+                // Calculate totals
+                if (t->type == INCOME)
+                {
+                    total_income += t->amount;
+                }
+                else
+                {
+                    total_expense += t->amount;
+                }
+                match_count++;
+            }
+        }
+    }
+
+    if (match_count == 0)
+    {
+        printf("No transactions found for this month.\n");
+    }
+    else
+    {
+        printf("----------------------------------------------------\n");
+        printf("Total Income:  +%.2f\n", total_income);
+        printf("Total Expense: -%.2f\n", total_expense);
+        printf("Net Balance:    %.2f\n", total_income - total_expense);
+    }
+    printf("----------------------------------------------------\n");
+}
