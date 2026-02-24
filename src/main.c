@@ -25,18 +25,18 @@ int main()
     int choice = 0;
     char buffer[10];
 
-    while (choice != 6)
+    while (choice != 7)
     {
+        printf("\n" COLOR_CYAN "=== Expense Tracker ===" COLOR_RESET "\n");
+        printf(COLOR_CYAN "1." COLOR_RESET " Add Transaction\n");
+        printf(COLOR_CYAN "2." COLOR_RESET " List Transactions\n");
+        printf(COLOR_CYAN "3." COLOR_RESET " Delete Transaction\n");
+        printf(COLOR_CYAN "4." COLOR_RESET " Monthly Summary\n");
+        printf(COLOR_CYAN "5." COLOR_RESET " Sort Transactions\n");
+        printf(COLOR_CYAN "6." COLOR_RESET " Export to CSV\n");
+        printf(COLOR_CYAN "7." COLOR_RESET " Exit (and Save)\n");
 
-        printf("\n=== Expense Tracker ===\n");
-        printf("1. Add Transaction\n");
-        printf("2. List Transactions\n");
-        printf("3. Delete Transaction\n");
-        printf("4. Monthly Summary\n");
-        printf("5. Sort Transactions\n");
-        printf("6. Exit (and Save)\n");
-
-        printf("Choose an option: ");
+        printf(COLOR_CYAN "Choose an option: " COLOR_RESET);
 
         // Ensure the user enters a number
         if (!read_int(&choice))
@@ -136,7 +136,12 @@ int main()
                 printf("Invalid sorting choice.\n");
             }
         }
-        else if (choice != 6)
+        else if (choice == 6)
+        {
+            // --- CSV LOGIC ---
+            export_to_csv(&my_list, "expense_report.csv");
+        }
+        else if (choice != 7)
         {
             // --- INVALID CHOICE ---
             printf("Invalid choice. Please try again.\n");
