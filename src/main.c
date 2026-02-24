@@ -31,7 +31,8 @@ int main()
         printf("\n=== Expense Tracker ===\n");
         printf("1. Add Transaction\n");
         printf("2. List Transactions\n");
-        printf("3. Exit (and Save)\n");
+        printf("3. Delete Transaction\n");
+        printf("4. Exit (and Save)\n");
         printf("Choose an option: ");
 
         read_string(buffer, sizeof(buffer));
@@ -68,12 +69,20 @@ int main()
         {
             print_all_transactions(&my_list);
         }
-        else if (choice != 3)
+        else if (choice == 3)
+        {
+            printf("Enter the ID of the transaction to delete: ");
+            read_string(buffer, sizeof(buffer));
+            int id_to_delete = atoi(buffer);
+
+            delete_transaction(&my_list, id_to_delete);
+        }
+        else if (choice != 4)
         {
             printf("Invalid choice. Please try again.\n");
         }
     }
-    
+
     // --- SAVE BEFORE EXIT ---
     save_transactions(&my_list, DATA_FILE);
 
