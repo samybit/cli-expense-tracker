@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "storage.h"
+#include "utils.h"
 
 void save_transactions(const TransactionList *list, const char *filename)
 {
@@ -75,4 +76,36 @@ void load_transactions(TransactionList *list, const char *filename)
 
     fclose(file);
     printf("Loaded %d transactions from file.\n", list->count);
+}
+
+void export_to_csv(const TransactionList *list, const char *filename)
+{
+    FILE *file = fopen(filename, "w");
+    if (file == NULL)
+    {
+        fprintf(stderr, COLOR_RED "Error: Could not open %s for exporting." COLOR_RESET "\n", filename);
+        return;
+    }
+
+    // 1. Write the standard CSV header
+    fprintf(file, "ID,Date,Amount,Type,Category,Description\n");
+
+    // 2. Iterate through the array and write each row
+    for (int i = 0; i < list->count; i++)
+    {
+        Transaction *t = &list->items[i];
+
+        // We wrap category and description in quotes to prevent user-entered
+        // commas from breaking the CSV columns.
+        fprintf(file, "%d,%s,%.2f,%s,\"%s\",\"%s\"\n",
+                t->id,
+                t->date,
+                t->amount,
+                (t->type == INCOME) ? "INCOME" : "EXPENSE",
+                t->category,
+                t->description);
+    }
+
+    fclose(file);
+    printf(COLOR_GREEN "Successfully exported %d transactions to %s" COLOR_RESET "\n", list->count, filename);
 }

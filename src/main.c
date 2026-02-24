@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include "transaction.h"
 #include "utils.h"
-#include "utils.h"
 #include "storage.h"
 
 int main()

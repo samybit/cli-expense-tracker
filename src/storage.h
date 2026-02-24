@@ -7,4 +7,6 @@
 void save_transactions(const TransactionList *list, const char *filename);
 void load_transactions(TransactionList *list, const char *filename);
 
+void export_to_csv(const TransactionList *list, const char *filename);
+
 #endif
