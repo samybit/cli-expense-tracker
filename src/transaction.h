@@ -10,6 +10,13 @@ typedef enum
     EXPENSE
 } TransactionType;
 
+// a. Define the sorting criteria
+typedef enum
+{
+    SORT_BY_DATE,
+    SORT_BY_AMOUNT
+} SortType;
+
 // 2. Define the Transaction struct
 typedef struct
 {
@@ -46,5 +53,6 @@ void print_all_transactions(const TransactionList *list);
 void free_transaction_list(TransactionList *list);
 void delete_transaction(TransactionList *list, int id);
 void monthly_summary(const TransactionList *list, int target_year, int target_month);
+void sort_transactions(TransactionList *list, SortType sort_type);
 
 #endif

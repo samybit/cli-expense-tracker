@@ -106,6 +106,7 @@ int main()
 
     // Memory cleanup
     free_transaction_list(&my_list);
+    
     printf("Goodbye!\n");
 
     return 0;
