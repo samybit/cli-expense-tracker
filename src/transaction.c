@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "transaction.h"
+#include "utils.h"
 
 Transaction create_transaction(int id,
                                char *date,
@@ -86,18 +87,25 @@ void add_transaction(TransactionList *list, Transaction t)
 // Print formatted table
 void print_all_transactions(const TransactionList *list)
 {
-    printf("\n%-5s | %-12s | %-10s | %-9s | %-15s | %-20s\n",
+    printf("\n" COLOR_CYAN "%-5s | %-12s | %-10s | %-9s | %-15s | %-20s" COLOR_RESET "\n",
            "ID", "Date", "Amount", "Type", "Category", "Description");
     printf("----------------------------------------------------------------------------------\n");
 
     for (int i = 0; i < list->count; i++)
     {
         Transaction *t = &list->items[i];
-        printf("%-5d | %-12s | %-10.2f | %-9s | %-15s | %-20s\n",
+
+        // Determine color based on type
+        const char *type_str = (t->type == INCOME) ? "INCOME" : "EXPENSE";
+        const char *color = (t->type == INCOME) ? COLOR_GREEN : COLOR_RED;
+
+        printf("%-5d | %-12s | "
+               "%s"
+               "%-10.2f" COLOR_RESET " | %s%-9s" COLOR_RESET " | %-15s | %-20s\n",
                t->id,
                t->date,
-               t->amount,
-               (t->type == INCOME) ? "INCOME" : "EXPENSE",
+               color, t->amount, // Colorize amount
+               color, type_str,  // Colorize type
                t->category,
                t->description);
     }
