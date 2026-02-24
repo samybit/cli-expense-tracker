@@ -63,13 +63,19 @@ void add_transaction(TransactionList *list, Transaction t)
     if (list->count >= list->capacity)
     {
         list->capacity *= 2; // Double the capacity
-        list->items = (Transaction *)realloc(list->items, list->capacity * sizeof(Transaction));
 
-        if (list->items == NULL)
+        // SAFE REALLOC: Use a temp pointer first
+        Transaction *temp = (Transaction *)realloc(list->items, list->capacity * sizeof(Transaction));
+
+        if (temp == NULL)
         {
-            printf("Memory reallocation failed!\n");
-            exit(1);
+            // If it fails, our old data in list->items is still perfectly safe!
+            fprintf(stderr, "Critical Error: Memory reallocation failed! Cannot add transaction.\n");
+            list->capacity /= 2; // Revert the capacity change since we didn't actually grow
+            return;              // Exit the function cleanly instead of crashing
         }
+
+        list->items = temp; // Now it's safe to assign
     }
 
     // Add the new transaction at the current count index, then increment count
@@ -145,14 +151,18 @@ void delete_transaction(TransactionList *list, int id)
     {
         list->capacity /= 2;
 
-        // realloc works for shrinking too!
-        list->items = (Transaction *)realloc(list->items, list->capacity * sizeof(Transaction));
+        // SAFE REALLOC: Use a temp pointer first
+        Transaction *temp = (Transaction *)realloc(list->items, list->capacity * sizeof(Transaction));
 
-        if (list->items == NULL && list->capacity > 0)
+        if (temp == NULL && list->capacity > 0)
         {
-            printf("Memory reallocation failed during shrink!\n");
-            exit(1);
+            // If shrinking fails, it's not an error. We just keep the larger memory block.
+            fprintf(stderr, "Warning: Memory reallocation failed during shrink! Keeping old memory size.\n");
+            list->capacity *= 2; // Revert the capacity change
+            return;
         }
+
+        list->items = temp; // Safe to assign
     }
 }
 
