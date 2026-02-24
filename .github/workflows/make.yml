@@ -1,0 +1,23 @@
+name: C/C++ CI with Make
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Download code onto the virtual machine
+    - uses: actions/checkout@v4
+
+    # Step 2: Run Makefile to ensure it compiles without errors
+    - name: Build the project
+      run: make
+
+    # Step 3: Run clean command to ensure it works
+    - name: Verify Clean up
+      run: make clean
