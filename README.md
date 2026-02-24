@@ -17,6 +17,9 @@ This project was built to demonstrate core computer science principles, includin
 
 \`\`\`text
 cli-expense-tracker/
+├── .github/
+│   └── workflows/
+│       └── make.yml     # "C/C++ CI with Make" workflow
 ├── src/
 │   ├── main.c           # Application loop and interactive menu
 │   ├── transaction.c    # Data models, QuickSort, and array management
