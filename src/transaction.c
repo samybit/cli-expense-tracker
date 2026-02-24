@@ -211,3 +211,78 @@ void monthly_summary(const TransactionList *list, int target_year, int target_mo
     }
     printf("----------------------------------------------------\n");
 }
+
+// === Sorting logic ===
+// Helper function to swap two transactions in memory
+void swap_transactions(Transaction *a, Transaction *b)
+{
+    Transaction temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+// The core of QuickSort: placing the pivot in its final sorted position
+int partition(Transaction *arr, int low, int high, SortType sort_type)
+{
+    Transaction pivot = arr[high]; // Choose the last element as pivot
+    int i = (low - 1);             // Index of the smaller element
+
+    for (int j = low; j <= high - 1; j++)
+    {
+        int should_swap = 0;
+
+        // Determine if current element is smaller than the pivot based on user choice
+        if (sort_type == SORT_BY_AMOUNT)
+        {
+            if (arr[j].amount < pivot.amount)
+            {
+                should_swap = 1;
+            }
+        }
+        else if (sort_type == SORT_BY_DATE)
+        {
+            if (strcmp(arr[j].date, pivot.date) < 0)
+            {
+                should_swap = 1;
+            }
+        }
+
+        // If it belongs before the pivot, move the boundary and swap
+        if (should_swap)
+        {
+            i++;
+            swap_transactions(&arr[i], &arr[j]);
+        }
+    }
+    // Place the pivot in its correct position
+    swap_transactions(&arr[i + 1], &arr[high]);
+    return (i + 1);
+}
+
+// The recursive sorting engine
+void quicksort(Transaction *arr, int low, int high, SortType sort_type)
+{
+    if (low < high)
+    {
+        // pi is the partitioning index, arr[pi] is now in the right place
+        int pi = partition(arr, low, high, sort_type);
+
+        // Recursively sort elements before and after partition
+        quicksort(arr, low, pi - 1, sort_type);
+        quicksort(arr, pi + 1, high, sort_type);
+    }
+}
+
+// The public wrapper function we call from main.c
+void sort_transactions(TransactionList *list, SortType sort_type)
+{
+    if (list->count > 1)
+    {
+        quicksort(list->items, 0, list->count - 1, sort_type);
+        printf("Transactions sorted successfully.\n");
+    }
+    else
+    {
+        printf("Not enough transactions to sort.\n");
+    }
+}
