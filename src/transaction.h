@@ -44,5 +44,6 @@ void init_transaction_list(TransactionList *list, int initial_capacity);
 void add_transaction(TransactionList *list, Transaction t);
 void print_all_transactions(const TransactionList *list);
 void free_transaction_list(TransactionList *list);
+void delete_transaction(TransactionList *list, int id);
 
 #endif
