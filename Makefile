@@ -1,25 +1,27 @@
 # Compiler settings
 CC = gcc
-CFLAGS = -Wall -Wextra -I./src
+CFLAGS = -Wall -Wextra -g
+TARGET = expense_tracker
 
-# Files to compile
-SRC = src/main.c src/transaction.c src/storage.c src/utils.c
-OBJ = $(SRC:.c=.o)
-
-# Name of the final executable
-EXEC = expense_tracker
+# Source and Object files
+SRCS = main.c transaction.c utils.c storage.c
+OBJS = $(SRCS:.c=.o)
 
 # Default target
-all: $(EXEC)
+all: $(TARGET) data_dir
 
-# Link the object files into the final executable
-$(EXEC): $(OBJ)
-	$(CC) $(OBJ) -o $(EXEC)
+# Link the objects to create the executable
+$(TARGET): $(OBJS)
+	$(CC) $(CFLAGS) -o $(TARGET) $(OBJS)
 
-# Compile each .c file into a .o (object) file
+# Compile C files into object files
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
+# Ensure the data directory exists for the save file
+data_dir:
+	mkdir -p data
+
 # Clean up build files
 clean:
-	rm -f src/*.o $(EXEC)
+	rm -f $(OBJS) $(TARGET)
