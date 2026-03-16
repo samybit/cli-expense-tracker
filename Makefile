@@ -1,10 +1,10 @@
-# Compiler settings
+# Settings
 CC = gcc
 CFLAGS = -Wall -Wextra -g
 TARGET = expense_tracker
 
 # Source and Object files
-SRCS = main.c transaction.c utils.c storage.c
+SRCS = src/main.c src/transaction.c src/utils.c src/storage.c
 OBJS = $(SRCS:.c=.o)
 
 # Default target
