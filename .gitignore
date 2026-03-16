@@ -503,3 +503,19 @@ Testing/
 .vscode
 .vscode/launch.json
 .vscode/settings.json
+
+
+# Compiled object files
+*.o
+
+# The executable
+expense_tracker
+
+# IDE/Editor folders (optional, but good practice)
+.vscode/
+.idea/
+
+# Application data and exports
+data/
+*.csv
+*.dat
