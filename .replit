@@ -1,0 +1,2 @@
+run = "make && ./expense_tracker"
+entrypoint = "src/main.c"
