@@ -1,5 +1,6 @@
 # Terminal Expense Tracker 📊
 [![C/C++ CI with Make](https://github.com/samybit/cli-expense-tracker/actions/workflows/make.yml/badge.svg)](https://github.com/samybit/cli-expense-tracker/actions/workflows/make.yml)
+[![Run on Replit](https://replit.com/badge/github/samybit/cli-expense-tracker)](https://replit.com/new/github/samybit/cli-expense-tracker)
 
 A robust, memory-safe command-line personal finance manager written entirely in C. 
 
